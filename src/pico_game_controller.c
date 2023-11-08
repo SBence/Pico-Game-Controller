@@ -106,6 +106,75 @@ void key_mode() {
   }
 }
 
+void nkro_report_set(uint8_t nkro_report[], uint8_t keycode) {
+    uint8_t bit = keycode % 8;
+    uint8_t byte = (keycode / 8) + 1;
+
+    if (keycode >= 240 && keycode <= 247) {
+      nkro_report[0] |= (1 << bit);
+    } else if (byte > 0 && byte <= 31) {
+      nkro_report[byte] |= (1 << bit);
+    }
+}
+
+// float f_clamp(float d, float min, float max) {
+//   const float t = d < min ? min : d;
+//   return t > max ? max : t;
+// }
+
+uint64_t nomouse_time_last = 0;
+float nomouse_enc_motion[ENC_GPIO_SIZE] = {0};
+
+#define NOMOUSE_CLAMP 0.1f
+#define NOMOUSE_THRESHOLD 0.05f
+#define NOMOUSE_DECAY 0.0005f
+
+/**
+ * Keyboard Mode (+ encoder keyboard output, no mouse needed)
+ **/
+void key_nomouse_mode() {
+  if (tud_hid_ready()) {  // Wait for ready, updating mouse too fast hampers
+                          // movement
+    /*------------- Keyboard -------------*/
+    uint8_t nkro_report[32] = {0};
+    for (int i = 0; i < SW_GPIO_SIZE; i++) {
+      if (!gpio_get(SW_GPIO[i]) &&
+          time_us_64() - sw_timestamp[i] >= SW_DEBOUNCE_TIME_US) {
+        nkro_report_set(nkro_report, SW_KEYCODE[i]);
+      }
+    }
+
+    // Get ms since last loop, for calculating decay
+    uint64_t nomouse_time_cur = time_us_64();
+    uint64_t nomouse_ticks = (nomouse_time_cur - nomouse_time_last) / 1000;
+    nomouse_time_last += 1000 * nomouse_ticks;
+    nomouse_ticks = nomouse_ticks > 10 ? 10 : nomouse_ticks;
+
+    float delta[ENC_GPIO_SIZE] = {0};
+    for (int i = 0; i < ENC_GPIO_SIZE; i++) {
+      delta[i] = (((int64_t) enc_val[i] - (int64_t) prev_enc_val[i]) * (ENC_REV[i] ? 1 : -1) + 0.0) / ENC_PULSE;
+      prev_enc_val[i] = enc_val[i];
+
+      nomouse_enc_motion[i] = nomouse_enc_motion[i] + delta[i];
+
+      if (nomouse_enc_motion[i] < -NOMOUSE_THRESHOLD) {
+        nkro_report_set(nkro_report, ENC_KEYCODE[i][0]);
+      } else if (nomouse_enc_motion[i] > NOMOUSE_THRESHOLD) {
+        nkro_report_set(nkro_report, ENC_KEYCODE[i][1]);
+      }
+
+      // Decay movement
+      if (nomouse_enc_motion[i] < 0) {
+        nomouse_enc_motion[i] = f_clamp(nomouse_enc_motion[i] + NOMOUSE_DECAY * nomouse_ticks, -NOMOUSE_CLAMP, 0);
+      } else {
+        nomouse_enc_motion[i] = f_clamp(nomouse_enc_motion[i] - NOMOUSE_DECAY * nomouse_ticks, 0, NOMOUSE_CLAMP);
+      }
+    }
+
+    tud_hid_n_report(0x00, REPORT_ID_KEYBOARD, &nkro_report, sizeof(nkro_report));
+  }
+}
+
 /**
  * Update Input States
  * Note: Switches are pull up, negate value
@@ -211,6 +280,9 @@ void init() {
   // Joy/KB Mode Switching
   if (!gpio_get(SW_GPIO[0])) {
     loop_mode = &key_mode;
+    joy_mode_check = false;
+  } else if (!gpio_get(SW_GPIO[2])) {
+    loop_mode = &key_nomouse_mode;
     joy_mode_check = false;
   } else {
     loop_mode = &joy_mode;
