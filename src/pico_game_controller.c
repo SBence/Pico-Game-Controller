@@ -130,7 +130,7 @@ float nomouse_enc_motion[ENC_GPIO_SIZE] = {0};
 
 #define NOMOUSE_CLAMP 0.1f
 #define NOMOUSE_THRESHOLD 0.05f
-#define NOMOUSE_DECAY 0.0005f
+#define NOMOUSE_DECAY 0.0015f
 
 /**
  * Keyboard Mode (+ encoder keyboard output, no mouse needed)
@@ -143,7 +143,7 @@ void key_nomouse_mode() {
     for (int i = 0; i < SW_GPIO_SIZE; i++) {
       if (!gpio_get(SW_GPIO[i]) &&
           time_us_64() - sw_timestamp[i] >= SW_DEBOUNCE_TIME_US) {
-        nkro_report_set(nkro_report, SW_KEYCODE[i]);
+        nkro_report_set(nkro_report, SW_KEYCODE_NOMOUSE[i]);
       }
     }
 
@@ -161,9 +161,9 @@ void key_nomouse_mode() {
       nomouse_enc_motion[i] = nomouse_enc_motion[i] + delta[i];
 
       if (nomouse_enc_motion[i] < -NOMOUSE_THRESHOLD) {
-        nkro_report_set(nkro_report, ENC_KEYCODE[i][0]);
+        nkro_report_set(nkro_report, ENC_KEYCODE_NOMOUSE[i][0]);
       } else if (nomouse_enc_motion[i] > NOMOUSE_THRESHOLD) {
-        nkro_report_set(nkro_report, ENC_KEYCODE[i][1]);
+        nkro_report_set(nkro_report, ENC_KEYCODE_NOMOUSE[i][1]);
       }
 
       // Decay movement
@@ -285,9 +285,11 @@ void init() {
   if (!gpio_get(SW_GPIO[0])) {
     loop_mode = &key_mode;
     joy_mode_check = false;
-  } else if (!gpio_get(SW_GPIO[2])) {
+  } else if (!gpio_get(SW_GPIO[3])) {
     loop_mode = &key_nomouse_mode;
     joy_mode_check = false;
+    sw_colors = SW_COLORS_DIVA;
+    sw_label_colors = SW_LABEL_COLORS_DIVA;
   } else {
     loop_mode = &joy_mode;
     joy_mode_check = true;
