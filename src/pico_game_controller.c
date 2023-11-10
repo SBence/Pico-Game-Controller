@@ -286,7 +286,7 @@ void init() {
   if (!gpio_get(SW_GPIO[0])) {
     loop_mode = &key_mode;
     joy_mode_check = false;
-  } else if (!gpio_get(SW_GPIO[2])) {
+  } else if (!gpio_get(SW_GPIO[3])) {
     loop_mode = &key_nomouse_mode;
     joy_mode_check = false;
     diva_colors = true;
