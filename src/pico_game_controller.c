@@ -41,6 +41,7 @@ void (*ws2812b_mode)();
 void (*loop_mode)();
 uint16_t (*debounce_mode)();
 bool joy_mode_check = true;
+bool diva_colors = false;
 
 lights_report_t lights_report;
 report_t report;
@@ -216,7 +217,11 @@ void core1_entry() {
     counter++;
     if (counter % 32 == 0) {
       rgb_idx = ++rgb_idx % 768;
-      ws2812b_mode(rgb_idx, SW_COLORS, SW_LABEL_COLORS);
+      if (diva_colors) {
+        ws2812b_mode(rgb_idx, SW_COLORS_DIVA, SW_LABEL_COLORS_DIVA);
+      } else {
+        ws2812b_mode(rgb_idx, SW_COLORS_DEFAULT, SW_LABEL_COLORS_DEFAULT);
+      }
     }
     sleep_ms(1);
   }
@@ -284,6 +289,7 @@ void init() {
   } else if (!gpio_get(SW_GPIO[2])) {
     loop_mode = &key_nomouse_mode;
     joy_mode_check = false;
+    diva_colors = true;
   } else {
     loop_mode = &joy_mode;
     joy_mode_check = true;
