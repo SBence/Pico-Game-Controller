@@ -12,6 +12,7 @@ extern lights_report_t lights_report;
 extern uint64_t reactive_timeout_timestamp;
 extern uint64_t sw_timestamp[SW_GPIO_SIZE];
 
+#include "colors.h"
 #include "ws2812b_util.c"
 #include "color_cycle.c"
 #include "color_cycle_v5.c"

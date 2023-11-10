@@ -216,7 +216,7 @@ void core1_entry() {
     counter++;
     if (counter % 32 == 0) {
       rgb_idx = ++rgb_idx % 768;
-      ws2812b_mode(rgb_idx);
+      ws2812b_mode(rgb_idx, SW_COLORS, SW_LABEL_COLORS);
     }
     sleep_ms(1);
   }

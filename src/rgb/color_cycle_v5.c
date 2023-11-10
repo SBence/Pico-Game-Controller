@@ -2,31 +2,11 @@
  * Color cycle effect & reactive buttons for Pocket SDVX Pico v5
  * @author SpeedyPotato
  **/
-const uint64_t timeout_us = 600000000;  // 600000000us = 10min
 const double WS2812B_BRIGHTNESS = 0.2;
-const RGB_t COLOR_BLACK = {0, 0, 0};
-const RGB_t SW_LABEL_COLORS[] = {
-    {255, 255, 255},  // START
-    {255, 255, 255},  // BT-A
-    {255, 255, 255},  // BT-B
-    {255, 255, 255},  // BT-C
-    {255, 255, 255},  // BT-D
-    {255, 255, 255},  // FX-L
-    {255, 255, 255},  // FX-R
-};
-const RGB_t SW_COLORS[] = {
-    {0, 0, 255},      // START
-    {255, 255, 255},  // BT-A
-    {255, 255, 255},  // BT-B
-    {255, 255, 255},  // BT-C
-    {255, 255, 255},  // BT-D
-    {255, 0, 0},      // FX-L
-    {255, 0, 0},      // FX-R
-};
 
 RGB_t ws2812b_data[WS2812B_LED_SIZE] = {0};
 
-void ws2812b_color_cycle_v5(uint32_t counter) {
+void ws2812b_color_cycle_v5(uint32_t counter, RGB_t *SW_COLORS, RGB_t *SW_LABEL_COLORS) {
   // rgb timeout
   uint64_t latest_switch_ts = sw_timestamp[0];
   for (int i = 1; i < SW_GPIO_SIZE; i++)

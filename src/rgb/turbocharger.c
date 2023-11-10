@@ -1,9 +1,9 @@
 /**
  * @author 4yn, SpeedyPotato
  * Turbocharger chasing laser effect
- * 
+ *
  * Move 2 lighting areas around the controller depending on knob input.
- * 
+ *
  * For each knob, calculate every 5 ms:
  * - Add any knob delta to a counter
  * - Clamp counter to some "maximum speed"
@@ -11,16 +11,16 @@
  * - If counter is too near 0 and has been there for a while, fade out
  * - Move the lighting area in the correct direction at a constant speed
  * - Decay the counter
- * 
+ *
  * Curent values are tuned for
  * - Lights sampled at 31.25 Hz (every 32ms)
  * - 0.1 rotations for lights to activate
  * - Lighting areas take 1s to make one full rotation
  * - Movement takes 1s to decay to stop
  * - Fade out takes another 0.5s to disappear
- * 
+ *
  * See turbo_led_base_pos for led positions
- * 
+ *
  * Lighting areas start at position 0 and will light up the 3 nearest LEDs.
  * By strategically positioning led 0 at the top, this avoids lighting areas
  * from suddenly appeaering.
@@ -81,7 +81,7 @@ float turbo_led_base_pos[TURBO_LIGHTS_N] = {
 };
 float turbo_start_pos[ENC_GPIO_SIZE] = {13, 3};
 
-void turbocharger_color_cycle(uint32_t unused) {
+void turbocharger_color_cycle(uint32_t unused, RGB_t *SW_COLORS, RGB_t *SW_LABEL_COLORS) {
   // calculate turbocharger vars
   for (int i = 0; i < ENC_GPIO_SIZE; i++) {
     int enc_delta = (enc_val[i] - turbo_prev_enc_val[i]) * (ENC_REV[i] ? -1 : 1);
