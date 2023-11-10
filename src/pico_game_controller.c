@@ -128,7 +128,7 @@ float nomouse_enc_motion[ENC_GPIO_SIZE] = {0};
 
 #define NOMOUSE_CLAMP 0.1f
 #define NOMOUSE_THRESHOLD 0.05f
-#define NOMOUSE_DECAY 0.0005f
+#define NOMOUSE_DECAY 0.0015f
 
 /**
  * Keyboard Mode (+ encoder keyboard output, no mouse needed)
