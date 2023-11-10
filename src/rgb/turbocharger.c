@@ -1,9 +1,9 @@
 /**
  * @author 4yn, SpeedyPotato
  * Turbocharger chasing laser effect
- * 
+ *
  * Move 2 lighting areas around the controller depending on knob input.
- * 
+ *
  * For each knob, calculate every 5 ms:
  * - Add any knob delta to a counter
  * - Clamp counter to some "maximum speed"
@@ -11,16 +11,16 @@
  * - If counter is too near 0 and has been there for a while, fade out
  * - Move the lighting area in the correct direction at a constant speed
  * - Decay the counter
- * 
+ *
  * Curent values are tuned for
  * - Lights sampled at 31.25 Hz (every 32ms)
  * - 0.1 rotations for lights to activate
  * - Lighting areas take 1s to make one full rotation
  * - Movement takes 1s to decay to stop
  * - Fade out takes another 0.5s to disappear
- * 
+ *
  * See turbo_led_base_pos for led positions
- * 
+ *
  * Lighting areas start at position 0 and will light up the 3 nearest LEDs.
  * By strategically positioning led 0 at the top, this avoids lighting areas
  * from suddenly appeaering.
@@ -81,7 +81,7 @@ float turbo_led_base_pos[TURBO_LIGHTS_N] = {
 };
 float turbo_start_pos[ENC_GPIO_SIZE] = {13, 3};
 
-void turbocharger_color_cycle(uint32_t unused) {
+void turbocharger_color_cycle(uint32_t unused, RGB_t *sw_colors, RGB_t *sw_label_colors) {
   // calculate turbocharger vars
   for (int i = 0; i < ENC_GPIO_SIZE; i++) {
     int enc_delta = (enc_val[i] - turbo_prev_enc_val[i]) * (ENC_REV[i] ? -1 : 1);
@@ -131,7 +131,7 @@ void turbocharger_color_cycle(uint32_t unused) {
     for (int i = 0; i < SW_GPIO_SIZE - 3; i++) {
       if (time_us_64() - reactive_timeout_timestamp >= REACTIVE_TIMEOUT_MAX) {
         if ((report.buttons >> i) % 2 == 1) {
-          ws2812b_data[2 * i + 2] = SW_COLORS[i + 1];
+          ws2812b_data[2 * i + 2] = sw_colors[i + 1];
         } else {
           ws2812b_data[2 * i + 2] = COLOR_BLACK;
         }
@@ -139,7 +139,7 @@ void turbocharger_color_cycle(uint32_t unused) {
         if (lights_report.lights.buttons[i] == 0) {
           ws2812b_data[2 * i + 2] = COLOR_BLACK;
         } else {
-          ws2812b_data[2 * i + 2] = SW_COLORS[i + 1];
+          ws2812b_data[2 * i + 2] = sw_colors[i + 1];
         }
       }
     }
@@ -147,7 +147,7 @@ void turbocharger_color_cycle(uint32_t unused) {
     /* start button sw_val index is offset by two with respect to LED_GPIO */
     if (time_us_64() - reactive_timeout_timestamp >= REACTIVE_TIMEOUT_MAX) {
       if ((report.buttons >> (SW_GPIO_SIZE - 1)) % 2 == 1) {
-        ws2812b_data[0] = SW_COLORS[0];
+        ws2812b_data[0] = sw_colors[0];
       } else {
         ws2812b_data[0] = COLOR_BLACK;
       }
@@ -155,12 +155,12 @@ void turbocharger_color_cycle(uint32_t unused) {
       if (lights_report.lights.buttons[SW_GPIO_SIZE - 3] == 0) {
         ws2812b_data[0] = COLOR_BLACK;
       } else {
-        ws2812b_data[0] = SW_COLORS[0];
+        ws2812b_data[0] = sw_colors[0];
       }
     }
     /* Switch Labels */
     for (int i = 0; i < SW_GPIO_SIZE - 2; i++) {
-      ws2812b_data[2 * i + 1] = SW_LABEL_COLORS[i];
+      ws2812b_data[2 * i + 1] = sw_label_colors[i];
     }
 
     /* peripheral turbocharger leds */

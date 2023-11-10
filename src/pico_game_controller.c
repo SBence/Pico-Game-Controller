@@ -42,6 +42,8 @@ void (*ws2812b_mode)();
 void (*loop_mode)();
 void (*debounce_mode)();
 bool joy_mode_check = true;
+const RGB_t *sw_colors = SW_COLORS_DEFAULT;
+const RGB_t *sw_label_colors = SW_LABEL_COLORS_DEFAULT;
 
 lights_report_t lights_report;
 report_t report;
@@ -217,7 +219,7 @@ void core1_entry() {
     counter++;
     if (counter % 32 == 0) {
       rgb_idx = ++rgb_idx % 768;
-      ws2812b_mode(rgb_idx);
+      ws2812b_mode(rgb_idx, sw_colors, sw_label_colors);
     }
     sleep_ms(1);
   }

@@ -26,6 +26,9 @@ const uint8_t ENC_KEYCODE[][2] = {
     {HID_KEY_W, HID_KEY_E},
     {HID_KEY_O, HID_KEY_P}
 };
+
+const uint64_t timeout_us = 600000000;  // RGB timeout, 600000000us = 10min
+
 const uint8_t SW_GPIO[] = {
     29, 3, 4, 5, 17, 12, 0, 8, 1,
 };
