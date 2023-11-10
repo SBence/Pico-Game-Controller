@@ -22,9 +22,13 @@ const uint8_t SW_KEYCODE[] = {
     HID_KEY_D, HID_KEY_F, HID_KEY_J, HID_KEY_K, HID_KEY_C,
     HID_KEY_M, HID_KEY_A, HID_KEY_NONE, HID_KEY_1,
 };
-const uint8_t ENC_KEYCODE[][2] = {
-    {HID_KEY_W, HID_KEY_E},
-    {HID_KEY_O, HID_KEY_P}
+const uint8_t SW_KEYCODE_NOMOUSE[] = {
+    HID_KEY_R, HID_KEY_D, HID_KEY_T, HID_KEY_ENTER, HID_KEY_Q,
+    HID_KEY_E, HID_KEY_F2, HID_KEY_NONE, HID_KEY_ESCAPE,
+};
+const uint8_t ENC_KEYCODE_NOMOUSE[][2] = {
+    {HID_KEY_ARROW_LEFT, HID_KEY_ARROW_RIGHT},
+    {HID_KEY_ARROW_UP, HID_KEY_ARROW_DOWN}
 };
 
 const uint64_t timeout_us = 600000000;  // RGB timeout, 600000000us = 10min

@@ -141,7 +141,7 @@ void key_nomouse_mode() {
     for (int i = 0; i < SW_GPIO_SIZE; i++) {
       if (!gpio_get(SW_GPIO[i]) &&
           time_us_64() - sw_timestamp[i] >= SW_DEBOUNCE_TIME_US) {
-        nkro_report_set(nkro_report, SW_KEYCODE[i]);
+        nkro_report_set(nkro_report, SW_KEYCODE_NOMOUSE[i]);
       }
     }
 
@@ -159,9 +159,9 @@ void key_nomouse_mode() {
       nomouse_enc_motion[i] = nomouse_enc_motion[i] + delta[i];
 
       if (nomouse_enc_motion[i] < -NOMOUSE_THRESHOLD) {
-        nkro_report_set(nkro_report, ENC_KEYCODE[i][0]);
+        nkro_report_set(nkro_report, ENC_KEYCODE_NOMOUSE[i][0]);
       } else if (nomouse_enc_motion[i] > NOMOUSE_THRESHOLD) {
-        nkro_report_set(nkro_report, ENC_KEYCODE[i][1]);
+        nkro_report_set(nkro_report, ENC_KEYCODE_NOMOUSE[i][1]);
       }
 
       // Decay movement
