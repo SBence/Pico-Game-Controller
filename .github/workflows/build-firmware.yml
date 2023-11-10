@@ -1,0 +1,41 @@
+name: Build firmware
+
+on: [push, workflow_dispatch]
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout this repository
+        uses: actions/checkout@v3
+
+      - name: Checkout pico-sdk
+        uses: actions/checkout@v3
+        with:
+          repository: raspberrypi/pico-sdk
+          path: pico-sdk
+
+      - name: Checkout pico-sdk submodules
+        working-directory: ${{github.workspace}}/pico-sdk
+        run: git submodule update --init
+
+      - name: Install Arm GNU Toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install gcc-arm-none-eabi libnewlib-arm-none-eabi
+
+      - name: Configure CMake
+        run: PICO_SDK_PATH=${{github.workspace}}/pico-sdk cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+
+      - name: Build
+        run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: firmware
+          path: build/src/Pico_Game_Controller.uf2
