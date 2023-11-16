@@ -296,9 +296,9 @@ void init() {
   }
 
   // RGB Mode Switching
-  // default to color cycle mode unless BT-B pressed when plugging in
-  // (turbocharger mode)
-  if (gpio_get(SW_GPIO[1])) {
+  // default to turbocharger mode in nomouse mode, to color cycle mode otherwise
+  // pressing BT-C when plugging in switches the mode
+  if (gpio_get(SW_GPIO[2]) == gpio_get(SW_GPIO[3])) {
     ws2812b_mode = &ws2812b_color_cycle_v5;
   } else {
     ws2812b_mode = &turbocharger_color_cycle;
