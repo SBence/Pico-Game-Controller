@@ -220,7 +220,7 @@ void core1_entry() {
       if (diva_colors) {
         ws2812b_mode(rgb_idx, SW_COLORS_DIVA, SW_LABEL_COLORS_DIVA);
       } else {
-        ws2812b_mode(rgb_idx, SW_COLORS_DEFAULT, SW_LABEL_COLORS_DEFAULT);
+        ws2812b_mode(rgb_idx, SW_COLORS_SDVX, SW_LABEL_COLORS_SDVX);
       }
     }
     sleep_ms(1);
