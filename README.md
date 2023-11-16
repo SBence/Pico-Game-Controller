@@ -24,6 +24,7 @@ Demo of this firmware running on Pocket SDVX Pico v4, purchasable at https://dis
 
 ## What's new
 
+- **SDVX colors**
 - **Diva Mode**
   - Hold BT-D when plugging the controller in to enable
   - Featuring arcade-like keybinds and colors inspired by the arcade game controller
