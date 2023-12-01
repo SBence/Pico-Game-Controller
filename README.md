@@ -17,7 +17,7 @@ Demo of this firmware running on Pocket SDVX Pico v4, purchasable at https://dis
 
 ## Get the firmware
 
-### [Firmware file downloads](https://github.com/SBence/Pico-Game-Controller/actions/workflows/build-firmware.yml)
+### [Firmware file downloads](https://github.com/SBence/Pico-Game-Controller/actions/workflows/build-firmware.yml?query=branch%3Acustom)
 
 1. Select the commit to download the firmware file of.
 2. Under **Artifacts**, select **firmware**.
