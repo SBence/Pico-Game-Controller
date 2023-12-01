@@ -29,6 +29,10 @@ Refer to the [quick start guide](https://docs.google.com/document/d/1D9CUx3U4uje
 - **Diva Mode**
   - Hold BT-D when plugging the controller in to enable
   - Featuring arcade-like keybinds and colors inspired by the arcade game controller
+- **SDVX colors**
+- **RGB mode switching changes**
+  - Turbocharger lights by default in Diva mode
+  - Hold BT-C when plugging the controller in to switch to the other RGB mode
 
 ## Currently working/fixed
 
