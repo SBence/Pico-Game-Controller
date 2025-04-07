@@ -13,11 +13,9 @@ Demo of this firmware running on Pocket SDVX Pico v4, purchasable at https://dis
 - Based on SpeedyPotato's [pocket-sdvx-pico-v5-develop](https://github.com/speedypotato/Pico-Game-Controller/tree/release/pocket-sdvx-pico-v5-develop) branch
   - nomouse mode from 4yn's [pocket-sdvx-pico-v5-develop-nomouse](https://github.com/4yn/Pico-Game-Controller/tree/release/pocket-sdvx-pico-v5-develop-nomouse) branch
 
-### [Branches with additional features](https://github.com/SBence/Pico-Game-Controller/branches)
-
 ## Get the firmware
 
-### [Firmware file downloads](https://github.com/SBence/Pico-Game-Controller/releases)
+### [Download firmware file](https://github.com/SBence/Pico-Game-Controller/releases/latest/download/Pico_Game_Controller.uf2)
 
 > [!NOTE]
 > Refer to the [quick start guide](https://docs.google.com/document/d/1D9CUx3U4uje8LoN8qtBFXIQEj6s7Rs03GC2eq-TACfs) for installation instructions.

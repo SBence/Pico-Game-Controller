@@ -1,0 +1,37 @@
+name: Build artifact
+
+on:
+  push:
+
+  workflow_dispatch:
+    inputs:
+      build-type:
+        description: Build type
+        type: choice
+        options:
+          - Release
+          - Debug
+          - MinSizeRel
+          - RelWithDebInfo
+
+env:
+  BUILD_TYPE: ${{ github.event.inputs.build-type || 'Release' }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout this repository
+        uses: actions/checkout@v4
+
+      - name: Build firmware
+        uses: SBence/build-pico-project@master
+        with:
+          build-type: ${{ env.BUILD_TYPE }}
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: firmware
+          path: build/src/Pico_Game_Controller.uf2
