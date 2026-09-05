@@ -1,4 +1,4 @@
-name: Build artifact
+name: Build firmware artifact
 
 on:
   push:
@@ -15,7 +15,7 @@ on:
           - RelWithDebInfo
 
 env:
-  BUILD_TYPE: ${{ github.event.inputs.build-type || 'Release' }}
+  BUILD_TYPE: ${{ inputs.build-type || 'Release' }}
 
 jobs:
   build:
@@ -23,7 +23,7 @@ jobs:
 
     steps:
       - name: Checkout this repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Build firmware
         uses: SBence/build-pico-project@master
@@ -31,7 +31,7 @@ jobs:
           build-type: ${{ env.BUILD_TYPE }}
 
       - name: Upload Build Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
-          name: firmware
           path: build/src/Pico_Game_Controller.uf2
+          archive: false

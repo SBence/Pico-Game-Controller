@@ -23,7 +23,7 @@ RUN \
   cmake --build ${BUILD_DIR} && \
   mkdir ${OUTPUT_DIR} && \
   cp ${BUILD_DIR}/src/*.uf2 ${OUTPUT_DIR}
-  # Adjust the line above to copy the desired files to the output directory.
+  # Edit the line above to copy the desired files to the output directory.
 
 FROM scratch
 
